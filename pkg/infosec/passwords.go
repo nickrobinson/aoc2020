@@ -33,12 +33,20 @@ func (p PasswordCountPolicy) ValidatePassword(password string) bool {
 }
 
 func (p PasswordPoisitionPoilcy) ValidatePassword(password string) bool {
-	for i, c := range password {
-		if string(c) == p.Character {
+	foundMatch := false
+	for i := 0; i < p.SecondCheckedPosition; i++ {
+		if string(password[i]) == p.Character {
+			// offset by 1 since password policies are not zero-indexed
 			if i+1 == p.FirstCheckedPosition || i+1 == p.SecondCheckedPosition {
-				return true
+				if foundMatch {
+					return false
+				}
+				foundMatch = true
 			}
 		}
 	}
-	return false
+	if foundMatch {
+		log.Debugf("Found match for password '%s' with policy: %v", password, p)
+	}
+	return foundMatch
 }

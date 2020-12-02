@@ -19,7 +19,7 @@ func init() {
 	log.SetLevel(log.DebugLevel)
 }
 
-func ConvertLineToPasswordData(line string) (infosec.PasswordCountPolicy, string) {
+func ConvertLineToPasswordData(line string) (infosec.PasswordPoilcy, string) {
 	splitLine := strings.Split(line, " ")
 	countInfo := strings.Split(splitLine[0], "-")
 	character := splitLine[1]
@@ -27,7 +27,7 @@ func ConvertLineToPasswordData(line string) (infosec.PasswordCountPolicy, string
 	password := splitLine[2]
 	minCount, _ := strconv.Atoi(countInfo[0])
 	maxCount, _ := strconv.Atoi(countInfo[1])
-	return infosec.PasswordCountPolicy{MinAppearanceCount: minCount, MaxAppearanceCount: maxCount, Character: character}, password
+	return infosec.PasswordPoisitionPoilcy{FirstCheckedPosition: minCount, SecondCheckedPosition: maxCount, Character: character}, password
 }
 
 func main() {

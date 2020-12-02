@@ -19,7 +19,7 @@ func TestValidatePositionPolicy(t *testing.T) {
 		t.Errorf("Expected password to be valid, but it was marked as invalid")
 	}
 
-	if policy.ValidatePassword("babdcc") == true {
+	if policy.ValidatePassword("ababba") == true {
 		t.Errorf("Expected password to be invalid, but it was marked as valid")
 	}
 }
