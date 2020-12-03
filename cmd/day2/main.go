@@ -3,8 +3,8 @@ package main
 import (
 	"bufio"
 	"os"
+	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/nickrobinson/aoc2020/pkg/infosec"
 	log "github.com/sirupsen/logrus"
@@ -20,14 +20,11 @@ func init() {
 }
 
 func ConvertLineToPasswordData(line string) (infosec.PasswordPoilcy, string) {
-	splitLine := strings.Split(line, " ")
-	countInfo := strings.Split(splitLine[0], "-")
-	character := splitLine[1]
-	character = strings.TrimSuffix(character, ":")
-	password := splitLine[2]
-	minCount, _ := strconv.Atoi(countInfo[0])
-	maxCount, _ := strconv.Atoi(countInfo[1])
-	return infosec.PasswordPoisitionPoilcy{FirstCheckedPosition: minCount, SecondCheckedPosition: maxCount, Character: character}, password
+	re := regexp.MustCompile(`^(\d+)-(\d+) (\w): (\w+)$`)
+	matches := re.FindStringSubmatch(line)
+	firstCondition, _ := strconv.Atoi(matches[1])
+	secondCondition, _ := strconv.Atoi(matches[2])
+	return infosec.PasswordPoisitionPoilcy{FirstCheckedPosition: firstCondition, SecondCheckedPosition: secondCondition, Character: matches[3]}, matches[4]
 }
 
 func main() {
