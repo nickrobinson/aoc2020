@@ -90,7 +90,7 @@ func LoadPassports(filepath string) ([]Passport, error) {
 			case "cid":
 				passport.CountryId = passportVal
 			default:
-				log.Errorf("Unkown key %s", passportKey)
+				log.Errorf("Unknown key %s", passportKey)
 			}
 		}
 	}
