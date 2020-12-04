@@ -7,11 +7,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-type slope struct {
-	right int
-	down  int
-}
-
 func init() {
 	// Output to stdout instead of the default stderr
 	// Can be any io.Writer, see below for File example
