@@ -20,28 +20,25 @@ func TestLoadingMap(t *testing.T) {
 }
 
 func TestIsValidPassport(t *testing.T) {
-	passport := Passport{EyeColor: "gry", PassportId: "860033327", ExpirationYear: 2020, HairColor: "#fffffd", BirthYear: 1937, IssueYear: 2017, CountryId: "147", Height: "183cm"}
-	if !IsValidPassport(&passport) {
-		t.Errorf("Expected passport to be valid, was invalid")
+	var tests = []struct {
+		name     string
+		passport Passport
+		valid    bool
+	}{
+		{"Basic valid passport", Passport{EyeColor: "gry", PassportId: "860033327", ExpirationYear: 2020, HairColor: "#fffffd", BirthYear: 1937, IssueYear: 2017, CountryId: "147", Height: "183cm"}, true},
+		{"Passport without CID", Passport{EyeColor: "gry", PassportId: "860033327", ExpirationYear: 2020, HairColor: "#fffffd", BirthYear: 1937, IssueYear: 2017, Height: "183cm"}, true},
+		{"Passport without PID", Passport{EyeColor: "gry", ExpirationYear: 2020, HairColor: "#fffffd", BirthYear: 1937, IssueYear: 2017, Height: "183cm"}, false},
+		{"Passport with missing fields", Passport{EyeColor: "brn", ExpirationYear: 2025, HairColor: "#cfa07d", IssueYear: 2011, Height: "59in", PassportId: "166559648"}, false},
+		{"Passport with invalid height", Passport{EyeColor: "gry", PassportId: "860033327", ExpirationYear: 2020, HairColor: "#fffffd", BirthYear: 1937, IssueYear: 2017, CountryId: "147", Height: "512cm"}, false},
+		{"Passport with invalid hair color", Passport{EyeColor: "gry", PassportId: "860033327", ExpirationYear: 2020, HairColor: "#fffff", BirthYear: 1937, IssueYear: 2017, CountryId: "147", Height: "183cm"}, false},
 	}
 
-	passportWithoutCid := Passport{EyeColor: "gry", PassportId: "860033327", ExpirationYear: 2020, HairColor: "#fffffd", BirthYear: 1937, IssueYear: 2017, Height: "183cm"}
-	if !IsValidPassport(&passportWithoutCid) {
-		t.Errorf("Expected passport to be valid, was invalid")
-	}
-
-	passportWithoutPid := Passport{EyeColor: "gry", ExpirationYear: 2020, HairColor: "#fffffd", BirthYear: 1937, IssueYear: 2017, Height: "183cm"}
-	if IsValidPassport(&passportWithoutPid) {
-		t.Errorf("Expected passport to be invalid, was valid")
-	}
-
-	passportWithMissingFields := Passport{EyeColor: "brn", ExpirationYear: 2025, HairColor: "#cfa07d", IssueYear: 2011, Height: "59in", PassportId: "166559648"}
-	if IsValidPassport(&passportWithMissingFields) {
-		t.Errorf("Expected passport to be invalid, was valid")
-	}
-
-	passportWithInvalidHeight := Passport{EyeColor: "gry", PassportId: "860033327", ExpirationYear: 2020, HairColor: "#fffffd", BirthYear: 1937, IssueYear: 2017, CountryId: "147", Height: "512cm"}
-	if IsValidPassport(&passportWithInvalidHeight) {
-		t.Errorf("Expected passport to be invalid, was valid")
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			valid := IsValidPassport(&tt.passport)
+			if valid != tt.valid {
+				t.Errorf("IsValidPassport(%s) got %v, want %v", tt.name, valid, tt.valid)
+			}
+		})
 	}
 }
