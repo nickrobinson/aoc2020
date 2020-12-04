@@ -13,17 +13,22 @@ import (
 var log = logrus.New()
 var validate = validator.New()
 
+const MinHeightCm = 150
+const MaxHeightCm = 193
+const MinHeightIn = 59
+const MaxHeightIn = 76
+
 func init() {
 	// Register custom height validation
 	_ = validate.RegisterValidation("height", func(fl validator.FieldLevel) bool {
 		fieldVal := fl.Field().String()
 		height, _ := strconv.Atoi(string(fieldVal[:len(fieldVal)-2]))
 		if strings.HasSuffix(fieldVal, "in") {
-			if height >= 59 && height <= 76 {
+			if height >= MinHeightIn && height <= MaxHeightIn {
 				return true
 			}
 		} else if strings.HasSuffix(fieldVal, "cm") {
-			if height >= 150 && height <= 193 {
+			if height >= MinHeightCm && height <= MaxHeightCm {
 				return true
 			}
 		}
