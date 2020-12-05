@@ -39,9 +39,9 @@ func main() {
 
 	for i, s := range occupiedSeats[:len(occupiedSeats)-1] {
 		if occupiedSeats[i+1] != s+1 {
-			log.Warnf("Empty seat found at %d", s+1)
+			log.Infof("Empty seat found at %d", s+1)
 		}
 	}
 
-	log.Warnf("Max Seat Num: %d", maxSeatNum)
+	log.Infof("Max Seat Num: %d", maxSeatNum)
 }

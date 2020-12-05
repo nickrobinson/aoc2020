@@ -4,10 +4,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
-
-var log = logrus.New()
 
 type BoardingPass struct {
 	SpacePartition string
@@ -25,7 +23,7 @@ func (p *BoardingPass) GetSeatNumber() int {
 	colNum, _ := strconv.ParseInt(col, 2, 64)
 	rowNum, _ := strconv.ParseInt(row, 2, 64)
 
-	log.WithFields(logrus.Fields{"col": col, "row": row}).Debug("Getting seat number")
-	log.Debugf("Col num: %d, Row num: %d", colNum, rowNum)
-	return int((rowNum * 8) + colNum)
+	seatNum := int((rowNum * 8) + colNum)
+	log.WithFields(log.Fields{"col": col, "row": row, "seatNum": seatNum}).Debug("Calculated Seat Number")
+	return seatNum
 }
