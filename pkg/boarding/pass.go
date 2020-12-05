@@ -13,6 +13,8 @@ type BoardingPass struct {
 	SpacePartition string
 }
 
+// GetSeatNumber converts seat partition data
+// to a binary representation and then decodes the seat num
 func (p *BoardingPass) GetSeatNumber() int {
 	row := p.SpacePartition[0:7]
 	col := p.SpacePartition[7:]
