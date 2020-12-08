@@ -69,6 +69,6 @@ func TestExecutingProgram(t *testing.T) {
 	console.AddInstruction(&Instruction{Operation: "acc", Argument: 6})
 	console.ExecuteProgram()
 	if console.Accumulator != 5 {
-		t.Errorf("Accumulator value at end of execution not correct. Exepected 5, got %d", console.Accumulator)
+		t.Errorf("Accumulator value at end of execution not correct. Expected 5, got %d", console.Accumulator)
 	}
 }
