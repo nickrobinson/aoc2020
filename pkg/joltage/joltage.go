@@ -33,36 +33,30 @@ func FindJoltageDifference(joltages []int) map[int]int {
 	return differences
 }
 
-func FindPossibleAdapterSets(joltages []int, currentPath []int) int {
-	log.Infof("len(joltages): %d, currentPath: %v", len(joltages), currentPath)
-	sort.Ints(joltages)
+func areCompatible(low, high int) bool {
+	return low+1 == high || low+2 == high || low+3 == high
+}
 
-	if len(joltages) == 1 {
-		if joltages[0] <= 3 {
-			return 1
-		} else {
-			return 0
+func FindPossibleAdapterSets(fromIndex int, joltages []int, visited map[int]int) int {
+	log.Infof("len(joltages): %d, visited: %v, fromIndex: %d", len(joltages), visited, fromIndex)
+	if fromIndex >= len(joltages)-3 {
+		return 1
+	}
+
+	num := joltages[fromIndex]
+	if res, ok := visited[num]; ok {
+		return res
+	}
+
+	var count int
+	for i := fromIndex + 1; i < fromIndex+4; i++ {
+		n := joltages[i]
+		log.Info(num, n)
+		if areCompatible(num, n) {
+			count += FindPossibleAdapterSets(i, joltages, visited)
 		}
 	}
 
-	// if len(joltages) == 2 {
-	// 	if joltages[1]-joltages[0] <= 3 && joltages[0] <= 3 {
-	// 		log.Infof("Found arrangement: %v", currentPath)
-	// 		return 1
-	// 	} else {
-	// 		return 0
-	// 	}
-	// }
-
-	sum := 0
-	for i := len(joltages) - 2; i > len(joltages)-5; i-- {
-		if i > 0 {
-			log.Infof("Checking that joltages[%d] (%d) - joltages[%d] (%d) <= 3", len(joltages)-1, joltages[len(joltages)-1], i, joltages[i])
-			if (joltages[len(joltages)-1] - joltages[i]) <= 3 {
-				log.Infof("Calling FindPossibleAdapterSets with joltages of len: %d", len(joltages[:i+1]))
-				sum += FindPossibleAdapterSets(joltages[:i], append(currentPath, joltages[len(joltages)-1]))
-			}
-		}
-	}
-	return sum
+	visited[num] = count // store the result
+	return count
 }

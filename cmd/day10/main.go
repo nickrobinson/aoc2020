@@ -22,7 +22,7 @@ func main() {
 	fp, _ := os.Open("input.txt")
 
 	scanner := bufio.NewScanner(fp)
-	joltages := []int{}
+	joltages := []int{0}
 
 	for scanner.Scan() {
 		lineText := scanner.Text()
@@ -32,6 +32,7 @@ func main() {
 		log.Infof("Differences: %v", differences)
 	}
 
-	sets := joltage.FindPossibleAdapterSets(joltages, []int{151})
+	visited := make(map[int]int)
+	sets := joltage.FindPossibleAdapterSets(0, joltages, visited)
 	log.Infof("Possible adapter combinations: %d", sets)
 }
